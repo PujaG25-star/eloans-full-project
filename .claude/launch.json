@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "eloans",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "eloans", "--", "--port", "5174", "--strictPort", "--host"],
+      "port": 5174,
+      "autoPort": false
+    },
+    {
+      "name": "eloans-5175",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "eloans", "--", "--port", "5175", "--strictPort", "--host"],
+      "port": 5175,
+      "autoPort": false
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Theming.
+   Light/dark come from [data-theme] on <html>; the accent family comes
+   from [data-accent]. Every colour in the UI resolves through these
+   tokens, so a page never needs to know which theme is active.
+------------------------------------------------------------------ */
+
+:root{
+  color-scheme: light;
+
+  /* surfaces */
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --card-2:#f7f9fd;
+  --surface-3:#eef2f8;
+  --border:#e8edf4;
+  --border-2:#eef1f6;
+
+  /* text */
+  --ink-strong:#0f1e39;
+  --ink:#17233f;
+  --ink-2:#3c4a63;
+  --muted:#71809a;
+  --muted-2:#76849f;
+
+  /* status */
+  --ok:#0a8f4d;
+  --ok-bright:#12b76a;
+  --ok-soft:#e7f8ef;
+  --warn:#a96a06;
+  --warn-soft:#fef4e2;
+  --warn-bright:#f5a524;
+  --danger:#e0443b;
+
+  /* on-hero text */
+  --on-hero:#ffffff;
+  --on-hero-soft:#c2d8f7;
+  --on-hero-dim:#8fc0ff;
+
+  /* chrome */
+  --footer-bg:#061a41;
+  --footer-deep:#04122f;
+  --footer-ink:#b8cdec;
+  --panel-navy:#0b2450;
+  --logo-plate:#0f2f6e;
+
+  --hero-tint:#f2eeff;
+  --art-1:#e8f0fd;
+  --art-2:#cfe0fb;
+  --art-3:#9dc2f5;
+
+  --shadow-card:0 12px 35px rgba(19,38,75,.07);
+  --shadow-pop:0 18px 44px rgba(4,16,42,.20);
+}
+
+/* ---------- accents ---------- */
+:root,[data-accent="purple"]{
+  --accent:#7c3aed;
+  --accent-hover:#6d28d9;
+  --accent-ink:#6b21d6;
+  --accent-soft:#f3ecff;
+  --accent-ring:#ddd6fe;
+  --accent-border:#c4b5fd;
+  --hero-1:#1c1046; --hero-2:#3f1fa0; --hero-3:#7c3aed;
+  --hero-dots:rgba(196,181,253,.34);
+  --on-hero-soft:#dcd0f8; --on-hero-dim:#c4b5fd;
+  --footer-bg:#180f3a; --footer-deep:#0f0925; --footer-ink:#c9bde8;
+  --panel-navy:#241355; --logo-plate:#3a1f80;
+}
+[data-accent="blue"]{
+  --accent:#1263e9;
+  --hero-tint:#eaf1fe;
+  --on-hero-soft:#c2d8f7; --on-hero-dim:#8fc0ff;
+  --footer-bg:#061a41; --footer-deep:#04122f; --footer-ink:#b8cdec;
+  --panel-navy:#0b2450; --logo-plate:#0f2f6e;
+  --accent-hover:#0d54cb;
+  --accent-ink:#0d56c6;
+  --accent-soft:#eef4ff;
+  --accent-ring:#bfdbfe;
+  --accent-border:#93c5fd;
+  --hero-1:#061d4e; --hero-2:#07347e; --hero-3:#0b53bf;
+  --hero-dots:rgba(120,178,255,.30);
+}
+[data-accent="green"]{
+  --accent:#0a8f4d;
+  --hero-tint:#e9f6ee;
+  --accent-hover:#077a41;
+  --accent-ink:#07713e;
+  --accent-soft:#e8f7ee;
+  --accent-ring:#a7f3d0;
+  --accent-border:#6ee7b7;
+  --accent-shadow:10,143,77;
+  --hero-1:#042519; --hero-2:#065f39; --hero-3:#0a9350;
+  --hero-dots:rgba(134,239,172,.30);
+  --on-hero-soft:#c6ebd6; --on-hero-dim:#8ee0b0;
+  --footer-bg:#04261a; --footer-deep:#03190f; --footer-ink:#bcdfcb;
+  --panel-navy:#08341f; --logo-plate:#0b5233;
+}
+
+/* ---------- dark ---------- */
+[data-theme="dark"]{
+  color-scheme: dark;
+
+  --bg:#0a1120;
+  --card:#111a2c;
+  --card-2:#162034;
+  --surface-3:#1c2740;
+  --border:#243149;
+  --border-2:#1d2941;
+
+  --ink-strong:#f2f6fd;
+  --ink:#e3eaf6;
+  --ink-2:#c0cbe0;
+  --muted:#93a2bb;
+  --muted-2:#7c8aa4;
+
+  --ok:#34d399;
+  --ok-bright:#34d399;
+  --ok-soft:#0e2f24;
+  --warn:#fbbf24;
+  --warn-soft:#33270d;
+  --danger:#f87171;
+
+  --footer-bg:#080f1d;
+  --footer-deep:#050a14;
+  --footer-ink:#94a6c4;
+  --panel-navy:#16203a;
+  --hero-tint:#171f36;
+  --art-1:#1e2b45;
+  --art-2:#2b3a5c;
+  --art-3:#4a5f8a;
+
+  --shadow-card:0 12px 35px rgba(0,0,0,.42);
+  --shadow-pop:0 18px 44px rgba(0,0,0,.55);
+}
+[data-theme="dark"][data-accent="blue"]{ --accent:#2563eb; --accent-hover:#1d4fd0; --accent-ink:#7cb0ff; --accent-soft:#122542; --accent-ring:#1e3f6b; --accent-border:#2b558f; }
+[data-theme="dark"][data-accent="green"]{ --accent:#0d8a56; --accent-hover:#0a7448; --accent-ink:#5eddb0; --accent-soft:#0d2c22; --accent-ring:#14513c; --accent-border:#177a58; }
+[data-theme="dark"][data-accent="purple"]{ --accent:#7c3aed; --accent-hover:#6a2dd4; --accent-ink:#c9b6ff; --accent-soft:#221a3d; --accent-ring:#3a2a6b; --accent-border:#4c37a0; }
+
+/* ---------- base ---------- */
+:root{
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+  font-synthesis:none;
+  text-rendering:optimizeLegibility;
+}
+*{box-sizing:border-box}
+@layer base{ body{margin:0;min-width:320px;background:var(--bg);color:var(--ink)} }
+html{transition:background-color .2s ease}
+.scrollbar::-webkit-scrollbar{width:5px;height:5px}
+.scrollbar::-webkit-scrollbar-thumb{background:var(--border);border-radius:999px}
+.shadow-soft{box-shadow:var(--shadow-card)}
+.glass{background:color-mix(in srgb,var(--card) 86%,transparent);backdrop-filter:blur(18px)}
+/* Element defaults must sit in @layer base: unlayered rules outrank Tailwind's
+   layered utilities, which would silently override text-* / bg-* classes. */
+@layer base{
+  button,input,select,textarea{font:inherit}
+  input,textarea,select{color:var(--ink);background-color:var(--card)}
+  ::placeholder{color:var(--muted-2)}
+}
+.recharts-wrapper{font-size:12px}
+
+@keyframes promoIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.promo-in{animation:promoIn .26s cubic-bezier(.2,.8,.3,1) both}
+@media (prefers-reduced-motion:reduce){.promo-in{animation:none}}
