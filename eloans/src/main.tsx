@@ -519,15 +519,37 @@ const sampleTestimonials:[string,string,string][]=[
   ['The eligibility check gave me a realistic figure before I applied anywhere, so I was not left with a rejection on my record.','First-time borrower, Bhubaneswar','Eligibility check'],
 ];
 
+/* Served from public/. Decorative, so if the file is absent the hero simply
+   falls back to the plain tinted panel rather than showing a broken image. */
+const heroBanner='/hero-banner.png';
+
 function Dashboard(){
   const {t:tr}=useLang();
+  const [bannerOk,setBannerOk]=useState(true);
   return <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
     <div className="min-w-0 space-y-5">
 
       {/* hero */}
-      <div className="relative overflow-hidden rounded-[16px] bg-[var(--hero-tint)] px-6 py-8 sm:px-9 sm:py-10">
+      <div className="@container relative overflow-hidden rounded-[16px] bg-[var(--hero-tint)] px-6 py-8 sm:px-9 sm:py-10">
+        {/* Banner artwork. Its own headline and buttons sit on the left of the
+            source image, so it is anchored right to show the illustration and
+            keep that half clear for the live, translatable text below.
+            Hidden on narrow cards, where there is no room beside the copy. */}
+        {bannerOk&&<>
+          <img
+            src={heroBanner}
+            alt=""
+            aria-hidden="true"
+            decoding="async"
+            onError={()=>setBannerOk(false)}
+            className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[46%] select-none object-cover object-[86%_center] @min-[640px]:block"
+          />
+          {/* Fades the artwork out under the copy so the text stays legible
+              in both themes. */}
+          <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[var(--hero-tint)] from-48% via-[var(--hero-tint)]/80 via-62% to-transparent @min-[640px]:block"/>
+        </>}
         <div className="pointer-events-none absolute -right-24 -top-28 h-[320px] w-[320px] rounded-full bg-[var(--accent)]/10 blur-3xl"/>
-        <div className="relative max-w-[760px]">
+        <div className={`relative max-w-[760px] ${bannerOk?'@min-[640px]:max-w-[54%]':''}`}>
           <div>
             <h1 className="text-[30px] font-black leading-[1.1] tracking-[-.03em] text-[var(--ink-strong)] sm:text-[38px]">{tr('Smart Loans. Simple Decisions.')}</h1>
             <p className="mt-4 max-w-[460px] text-[14.5px] leading-relaxed text-[var(--muted)]">
