@@ -1,4 +1,4 @@
-import React,{useCallback,useEffect,useMemo,useRef,useState} from 'react';
+import React,{useCallback,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {BrowserRouter,Navigate,useLocation,useNavigate,Routes,Route,Link} from 'react-router-dom';
 import * as Icons from 'lucide-react';
@@ -59,7 +59,7 @@ const subMenus:Record<string,[string,string][]>={
 
 function SideLink({label,path,ic,active,badge,onNav}:{label:string;path:string;ic:string;active:boolean;badge?:string;onNav:()=>void}){
   const {t}=useLang();
-  return <Link to={path} onClick={onNav} className={`flex items-center gap-3 rounded-[10px] px-3.5 py-2.5 text-[14px] font-semibold transition ${active?'bg-[var(--accent)] text-white shadow-[0_7px_17px_rgba(18,99,233,.22)]':'text-[var(--ink-2)] hover:bg-[var(--accent-soft)] hover:text-[var(--accent-ink)]'}`}>
+  return <Link to={path} onClick={onNav} className={`flex items-center gap-3 rounded-[10px] px-3.5 py-2.5 text-[14px] font-semibold ${active?'bg-[var(--accent)] text-white shadow-[0_7px_17px_rgba(18,99,233,.22)]':'text-[var(--ink-2)] transition-colors duration-100 hover:bg-[var(--accent-soft)] hover:text-[var(--accent-ink)]'}`}>
     <Icon name={ic as keyof typeof Icons} size={18}/><span className="flex-1">{t(label)}</span>
     {badge&&<span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${active?'bg-[var(--card)]/20 text-white':'bg-[var(--accent-soft)] text-[var(--accent-ink)]'}`}>{t(badge)}</span>}
   </Link>;
@@ -230,6 +230,17 @@ function Shell(){
   const closeAll=useCallback(()=>{setNotify(false);setSearch('')},[]);
   useDismiss(closeAll);
   useEffect(()=>{setMobile(false);closeAll()},[loc.pathname,closeAll]);
+  // Land at the top of every new page. Without this you keep the previous
+  // page's scroll offset and arrive mid-content, which reads as a dead click.
+  // The browser's own scrollRestoration re-applies the old offset after we
+  // reset it, so it has to be turned off for this to hold.
+  useEffect(()=>{
+    if('scrollRestoration' in history) history.scrollRestoration='manual';
+  },[]);
+  useLayoutEffect(()=>{
+    if(loc.hash) return;
+    window.scrollTo(0,0);
+  },[loc.pathname,loc.hash]);
 
   const results=useMemo(()=>{
     const q=search.trim().toLowerCase();
@@ -250,7 +261,7 @@ function Shell(){
   return <div className="dash min-h-screen bg-[var(--bg)] text-[var(--ink)]">
     {mobile&&<div onClick={()=>setMobile(false)} className="fixed inset-0 z-40 bg-[var(--footer-deep)]/45 lg:hidden"/>}
 
-    <aside className={`fixed inset-y-0 left-0 z-50 flex w-[260px] flex-col border-r border-[var(--border)] bg-[var(--card)] transition-transform duration-200 lg:translate-x-0 ${mobile?'translate-x-0':'-translate-x-full'}`}>
+    <aside className={`fixed inset-y-0 left-0 z-50 flex w-[260px] flex-col border-r border-[var(--border)] bg-[var(--card)] transition-transform duration-150 ease-out will-change-transform motion-reduce:transition-none lg:translate-x-0 ${mobile?'translate-x-0':'-translate-x-full'}`}>
       <div className="flex h-[72px] shrink-0 items-center gap-3 px-5">
         <Link to="/" className="flex items-center gap-2.5">
           <span className="grid h-10 w-10 place-items-center rounded-[12px] bg-[var(--accent)] text-[18px] font-black text-white">e</span>
@@ -268,7 +279,7 @@ function Shell(){
           if(!items) return <SideLink key={path} label={label} path={path} ic={ic} active={isActive(path)} onNav={()=>setMobile(false)}/>;
           const open=openMenu===path;
           return <div key={path}>
-            <div className={`flex items-center gap-3 rounded-[10px] pr-2 transition ${isActive(path)?'bg-[var(--accent)] text-white shadow-[0_7px_17px_rgba(18,99,233,.22)]':'text-[var(--ink-2)] hover:bg-[var(--accent-soft)] hover:text-[var(--accent-ink)]'}`}>
+            <div className={`flex items-center gap-3 rounded-[10px] pr-2 ${isActive(path)?'bg-[var(--accent)] text-white shadow-[0_7px_17px_rgba(18,99,233,.22)]':'text-[var(--ink-2)] transition-colors duration-100 hover:bg-[var(--accent-soft)] hover:text-[var(--accent-ink)]'}`}>
               <Link to={path} onClick={()=>setMobile(false)} className="flex flex-1 items-center gap-3 py-2.5 pl-3.5 text-[14px] font-semibold"><Icon name={ic as keyof typeof Icons} size={18}/>{t(label)}</Link>
               <button onClick={()=>setOpenMenu(open?null:path)} aria-label={tf('Toggle {label}',{label})} aria-expanded={open} className="grid h-7 w-7 place-items-center rounded-md">
                 <Icons.ChevronRight size={16} className={`transition-transform ${open?'rotate-90':''}`}/>
@@ -277,7 +288,7 @@ function Shell(){
             {open&&<div className="ml-5 mt-1 space-y-0.5 border-l border-[var(--border)] pl-3">
               {items.map(([lb,href])=>(
                 <Link key={lb+href} to={href} onClick={()=>setMobile(false)}
-                  className={`block rounded-[8px] px-3 py-1.5 text-[12.5px] font-semibold transition ${loc.pathname===href?'bg-[var(--accent-soft)] text-[var(--accent-ink)]':'text-[var(--muted)] hover:bg-[var(--card-2)] hover:text-[var(--ink-2)]'}`}>{t(lb)}</Link>
+                  className={`block rounded-[8px] px-3 py-1.5 text-[12.5px] font-semibold ${loc.pathname===href?'bg-[var(--accent-soft)] text-[var(--accent-ink)]':'text-[var(--muted)] transition-colors duration-100 hover:bg-[var(--card-2)] hover:text-[var(--ink-2)]'}`}>{t(lb)}</Link>
               ))}
             </div>}
           </div>;
