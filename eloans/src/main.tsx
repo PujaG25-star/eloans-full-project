@@ -8,8 +8,9 @@ import './index.css';
 import {loans,banks,insurance} from './catalog';
 import {products,families} from './catalog';
 import {BankLogo} from './BankLogo';
-import {ScoreDial,SemiGauge,HeroArt,ClipboardArt,BankArt,BotArt} from './DashArt';
+import {ScoreDial,HeroArt,ClipboardArt,BankArt,BotArt} from './DashArt';
 import {applyStoredTheme,useTheme,accents} from './theme';
+import {AdSlot} from './AdSlot';
 import {applyStoredLang,useLang,languages,t,tf,td} from './i18n';
 import {usePageMeta,ErrorBoundary} from './meta';
 import {infoPages} from './catalog';
@@ -753,20 +754,7 @@ function Dashboard(){
         <p className="relative mt-4 text-[11px] leading-relaxed text-[var(--muted-2)]">{t('Eligibility results are indicative and do not guarantee loan approval.')}</p>
       </div>
 
-      <Panel title="Smart Insights" action={<span className="shrink-0 rounded-full bg-[var(--ok-soft)] px-2.5 py-1 text-[11px] font-bold text-[var(--ok)]">{t('Very Good')}</span>}>
-        <div className="-mt-3 mb-4 text-[12px] text-[var(--muted-2)]">{t('Based on your profile')}</div>
-        <div className="flex flex-wrap items-center gap-4">
-          <SemiGauge value={78} label="Eligibility Score" size={148}/>
-          <div className="min-w-[140px] flex-1 space-y-2.5">
-            {['High chances of approval','Good credit score','Stable income'].map(x=>(
-              <div key={x} className="flex items-start gap-2 text-[12.5px] text-[var(--ink-2)]">
-                <Icons.CircleCheckBig size={15} className="mt-px shrink-0 text-[var(--ok-bright)]"/>{t(x)}
-              </div>
-            ))}
-          </div>
-        </div>
-        <Link to="/credit-score" className="mt-5 block rounded-[9px] border border-[var(--border)] py-2.5 text-center text-[13px] font-bold text-[var(--ink)] transition hover:border-[var(--accent)] hover:text-[var(--accent-ink)]">{t('Improve Score')}</Link>
-      </Panel>
+      <AdSlot/>
     </aside>
   </div>;
 }

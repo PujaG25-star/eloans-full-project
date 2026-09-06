@@ -24,7 +24,7 @@ export function ScoreDial({value,min=300,max=900,size=44}:{value:number;min?:num
   </svg>;
 }
 
-/* Large half-ring used by Smart Insights. */
+/* Large half-ring. Currently unused — kept for reuse. */
 export function SemiGauge({value,label,size=150}:{value:number;label:string;size?:number}){
   const r=52, cx=60, cy=60, len=Math.PI*r;
   const pct=Math.min(Math.max(value/100,0),1);
