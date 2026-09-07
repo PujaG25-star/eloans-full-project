@@ -288,6 +288,36 @@ const infoPageBanners:Record<string,HeroBanner>={
     mobileImage:'/rates-pre-approved-hero-m.webp',mobileAspect:'972 / 724',
     crumbBox:{left:'3.0%',top:'23%',width:'3.0%',height:'5%'},
   },
+  'insurance/health':{
+    image:'/ins-health-hero.webp',imageAspect:'2172 / 724',
+    mobileImage:'/ins-health-hero-m.webp',mobileAspect:'962 / 724',
+    crumbBox:{left:'3.1%',top:'24%',width:'3.0%',height:'5%'},
+  },
+  'insurance/life':{
+    image:'/ins-life-hero.webp',imageAspect:'2172 / 724',
+    mobileImage:'/ins-life-hero-m.webp',mobileAspect:'997 / 724',
+    crumbBox:{left:'3.2%',top:'23%',width:'3.0%',height:'5%'},
+  },
+  'insurance/vehicle':{
+    image:'/ins-vehicle-hero.webp',imageAspect:'2172 / 724',
+    mobileImage:'/ins-vehicle-hero-m.webp',mobileAspect:'1152 / 724',
+    crumbBox:{left:'3.1%',top:'23.5%',width:'3.0%',height:'5%'},
+  },
+  'insurance/loan-protection':{
+    image:'/ins-loan-protection-hero.webp',imageAspect:'2172 / 724',
+    mobileImage:'/ins-loan-protection-hero-m.webp',mobileAspect:'1082 / 724',
+    crumbBox:{left:'3.1%',top:'23.5%',width:'3.0%',height:'5%'},
+  },
+  'insurance/travel':{
+    image:'/ins-travel-hero.webp',imageAspect:'2172 / 724',
+    mobileImage:'/ins-travel-hero-m.webp',mobileAspect:'1212 / 724',
+    crumbBox:{left:'3.2%',top:'23.5%',width:'2.9%',height:'5%'},
+  },
+  'insurance/buy-renew':{
+    image:'/ins-buy-renew-hero.webp',imageAspect:'1884 / 835',
+    mobileImage:'/ins-buy-renew-hero-m.webp',mobileAspect:'669 / 620',
+    crumbBox:{left:'3.9%',top:'25%',width:'3.5%',height:'5%'},
+  },
 };
 
 /* Loan product pages are also rendered by one component, so their artwork is
