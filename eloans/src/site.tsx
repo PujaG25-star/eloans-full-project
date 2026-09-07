@@ -280,14 +280,17 @@ function PageHero({eyebrow,title,sub,crumb,image,imageAspect,crumbBox,art}:{eyeb
   return <div className="relative overflow-hidden" style={{background:showArt?ART_BASE:NAVY}}>
     {showArt&&<>
       <img src={art} alt="" aria-hidden="true" decoding="async" onError={()=>setArtOk(false)}
-        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-[68%_center]"/>
+        className="pointer-events-none absolute inset-y-0 right-0 h-full w-[64%] select-none object-cover object-[72%_center]"/>
       <div className="pointer-events-none absolute inset-0" style={{background:ART_SCRIM}}/>
     </>}
     {!showArt&&<div className="pointer-events-none absolute inset-0" style={{backgroundImage:DOTS,backgroundSize:'22px 22px',maskImage:'linear-gradient(to right,transparent 45%,#000 100%)'}}/>}
-    <div className="relative mx-auto w-full max-w-[1200px] px-5 py-14 sm:px-8 sm:py-20">
+    <div className={`relative mx-auto w-full max-w-[1200px] px-5 sm:px-8 ${showArt?'py-10 sm:py-12':'py-14 sm:py-20'}`}>
       {crumb&&<div className="mb-4 flex items-center gap-2 text-[12.5px] text-[var(--on-hero-soft)]"><Link to="/" className="hover:text-white">{t('Home')}</Link><span>/</span><span className="text-white">{t(crumb)}</span></div>}
       {eyebrow&&<div className="mb-3 text-[12px] font-bold uppercase tracking-[.14em] text-[var(--on-hero-dim)]">{t(eyebrow)}</div>}
-      <h1 className={`text-[34px] font-black leading-[1.08] tracking-[-.025em] text-white sm:text-[44px] ${showArt?'max-w-[50%]':'max-w-[760px]'}`}>{t(title)}</h1>
+      {/* Slightly tighter type while art shows: the copy column is only half
+          width, and long languages (Tamil, Telugu) otherwise wrap to five
+          lines and stretch the banner out of proportion. */}
+      <h1 className={`font-black leading-[1.08] tracking-[-.025em] text-white ${showArt?'max-w-[50%] text-[28px] sm:text-[36px]':'max-w-[760px] text-[34px] sm:text-[44px]'}`}>{t(title)}</h1>
       {sub&&<p className={`mt-4 text-[15.5px] leading-relaxed text-[var(--on-hero-soft)] ${showArt?'max-w-[46%]':'max-w-[620px]'}`}>{t(sub)}</p>}
     </div>
   </div>;
