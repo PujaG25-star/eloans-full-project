@@ -1,4 +1,4 @@
-import {useMemo,useState} from 'react';
+import {useEffect,useMemo,useState} from 'react';
 import {Routes,Route,Link,NavLink,useParams,useLocation} from 'react-router-dom';
 import {ArrowRight,ArrowUpRight,Menu,X,Check,ChevronDown,Star,Phone,Mail,MapPin,ShieldCheck,Zap,FileCheck2,Users,Clock,Percent,Landmark,Calculator,BadgeCheck,TrendingUp,Headphones,Lock,Building2,Sparkles,Send,Plus,Minus,ArrowDownUp,Bike,Car,CarFront,Gem,GraduationCap,House,MapPinned,Truck,WalletCards,BriefcaseBusiness,LayoutGrid,Banknote,LineChart,Globe,Info,HeartPulse,HeartHandshake,Shield,Plane,PiggyBank,Wallet,Ship,Coins,CandlestickChart,Briefcase} from 'lucide-react';
 import {RATES_AS_OF} from './data';
@@ -234,7 +234,33 @@ function Faq({items}:{items:[string,string][]}){
 }
 
 /* ---------- pages ---------- */
-function PageHero({eyebrow,title,sub,crumb}:{eyebrow?:string;title:string;sub?:string;crumb?:string}){
+/* A hero can be replaced wholesale by artwork that already carries the same
+   copy. The image is English-only and its text is unreadable when small, so
+   it is used only for English and only above a usable width; otherwise the
+   live, translated hero renders as normal. */
+function PageHeroImage({src,aspect}:{src:string;aspect:string}){
+  const {t}=useLang();
+  const [ok,setOk]=useState(true);
+  if(!ok) return null;
+  return <div className="relative">
+    <img src={src} alt={t('Loan products')} decoding="async" onError={()=>setOk(false)}
+      className="block w-full select-none" style={{aspectRatio:aspect,objectFit:'cover'}}/>
+    {/* The breadcrumb is painted into the artwork; keep "Home" clickable. */}
+    <Link to="/" aria-label={t('Home')}
+      className="absolute rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      style={{left:'3.1%',top:'20%',width:'3.6%',height:'6%'}}/>
+  </div>;
+}
+
+function PageHero({eyebrow,title,sub,crumb,image,imageAspect}:{eyebrow?:string;title:string;sub?:string;crumb?:string;image?:string;imageAspect?:string}){
+  const {lang}=useLang();
+  const [wide,setWide]=useState(typeof window!=='undefined'&&window.innerWidth>=900);
+  useEffect(()=>{
+    const on=()=>setWide(window.innerWidth>=900);
+    on(); window.addEventListener('resize',on);
+    return ()=>window.removeEventListener('resize',on);
+  },[]);
+  if(image&&imageAspect&&lang==='en'&&wide) return <PageHeroImage src={image} aspect={imageAspect}/>;
   return <div className="relative overflow-hidden" style={{background:NAVY}}>
     <div className="pointer-events-none absolute inset-0" style={{backgroundImage:DOTS,backgroundSize:'22px 22px',maskImage:'linear-gradient(to right,transparent 45%,#000 100%)'}}/>
     <div className="relative mx-auto w-full max-w-[1200px] px-5 py-14 sm:px-8 sm:py-20">
@@ -252,7 +278,8 @@ export function LoansIndex(){
   const list=useMemo(()=>loans.filter(l=>(l.name+l.description).toLowerCase().includes(q.toLowerCase())),[q]);
   return <>
     <PageHero eyebrow="Loan products" crumb="Loans" title="Every loan we broker, with real starting rates"
-      sub={tf('{n} products across eight families of secured and unsecured lending. Each page sets out who it suits, what you need, what it costs and what to weigh up.',{n:products.length})}/>
+      sub={tf('{n} products across eight families of secured and unsecured lending. Each page sets out who it suits, what you need, what it costs and what to weigh up.',{n:products.length})}
+      image="/loans-hero.webp" imageAspect="1600 / 533"/>
     <Section>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div className="text-[14px] text-[var(--muted)]">{tf('{shown} of {total} products',{shown:list.length,total:loans.length})}</div>
