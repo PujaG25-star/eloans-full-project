@@ -799,8 +799,11 @@ function Dashboard(){
         {/* The banner artwork this came from carries its own copy and button,
             which would render ~6px tall in this 360px rail. Only its
             illustration is used, so the text below stays live and translated. */}
+        {/* Sits fully inside the card so nothing is clipped, and multiplies so
+            its near-white backdrop (rgb 251,253,255) dissolves into the white
+            card instead of showing as a pasted rectangle. */}
         <img src="/eligibility-art.webp" alt="" aria-hidden="true" decoding="async"
-          className="art-light-only pointer-events-none absolute -bottom-2 -right-1 w-[118px] select-none"/>
+          className="art-light-only pointer-events-none absolute bottom-0 right-0 w-[112px] select-none mix-blend-multiply"/>
         <ClipboardArt className="art-dark-only pointer-events-none absolute -bottom-2 right-1 w-[104px]"/>
         <div className="relative max-w-[190px]">
           <h3 className="text-[16px] font-extrabold leading-snug tracking-[-.01em] text-[var(--ink-strong)]">{t('Check your eligibility in 2 minutes')}</h3>
