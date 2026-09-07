@@ -524,6 +524,12 @@ const sampleTestimonials:[string,string,string][]=[
    falls back to the live-text panel rather than a broken image. */
 const heroBannerSources=['/hero-banner.webp','/hero-banner.png'];
 const HERO_ASPECT='1999 / 786';
+/* Phone-sized crop of the same artwork: just the illustration, with the
+   baked-in headline and buttons cut away. Cropping the full banner with
+   object-position instead was never precise enough - it always caught a
+   fragment of the baked text. */
+const HERO_BANNER_M='/hero-banner-m.webp';
+const HERO_M_ASPECT='999 / 786';
 
 /* The banner's own headline, buttons and feature labels are baked in, so the
    two calls to action are re-created as transparent links sitting exactly on
@@ -553,10 +559,11 @@ function Dashboard(){
      Every other language keeps the live, translated hero. */
   const bannerLoadable=bannerIdx<heroBannerSources.length;
   const useBanner=lang==='en'&&heroWide&&bannerLoadable;
-  /* Where the banner cannot be used as-is - narrow screens, or a language it
-     was not drawn in - it still appears as a background behind the live copy
-     rather than being dropped entirely. */
-  const useBannerBg=!useBanner&&bannerLoadable;
+  /* Where the banner cannot be used as-is, it still appears rather than being
+     dropped. Narrow cards get it as a clear band above the copy; wider ones in
+     another language keep it as a backdrop behind the copy. */
+  const useBannerBand=!useBanner&&bannerLoadable&&!heroWide;
+  const useBannerBg=!useBanner&&bannerLoadable&&heroWide;
   const bannerOk=false;
   return <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
     <div ref={heroRef} className="min-w-0 space-y-5">
@@ -579,7 +586,14 @@ function Dashboard(){
                 style={{left:h.left,top:h.top,width:h.width,height:h.height}}/>
             ))}
           </div>
-        : <div className={`@container relative overflow-hidden rounded-[16px] px-6 py-8 sm:px-9 sm:py-10 ${useBannerBg?'':'bg-[var(--hero-tint)]'}`}>
+        : <div className={`@container relative overflow-hidden rounded-[16px] ${useBannerBand?'pb-8':'px-6 py-8 sm:px-9 sm:py-10'} ${useBannerBg?'':'bg-[var(--hero-tint)]'}`}>
+        {/* Phone: the artwork gets its own clear band above the copy. This is
+            the pre-cropped mobile asset shown whole - nothing is cut off, so
+            the illustration is fully visible at phone width. */}
+        {useBannerBand&&<img src={HERO_BANNER_M} alt="" aria-hidden="true" decoding="async"
+          onError={()=>setBannerIdx(i=>i+1)}
+          className="relative mb-6 block w-full select-none"
+          style={{aspectRatio:HERO_M_ASPECT,objectFit:'cover'}}/>}
         {useBannerBg&&<>
           {/* Blurred: the artwork carries its own headline, EMI figures and
               book spines, which would otherwise read as competing text behind
@@ -594,7 +608,7 @@ function Dashboard(){
           <div className="pointer-events-none absolute inset-0" style={{background:'linear-gradient(to bottom,color-mix(in srgb,var(--hero-tint) 90%,transparent),color-mix(in srgb,var(--hero-tint) 80%,transparent))'}}/>
         </>}
         <div className="pointer-events-none absolute -right-24 -top-28 h-[320px] w-[320px] rounded-full bg-[var(--accent)]/10 blur-3xl"/>
-        <div className={`relative max-w-[760px] ${bannerOk?'@min-[640px]:max-w-[54%]':''}`}>
+        <div className={`relative max-w-[760px] ${useBannerBand?'px-6':''} ${bannerOk?'@min-[640px]:max-w-[54%]':''}`}>
           <div>
             <h1 className="text-[30px] font-black leading-[1.1] tracking-[-.03em] text-[var(--ink-strong)] sm:text-[38px]">{tr('Smart Loans. Simple Decisions.')}</h1>
             <p className="mt-4 max-w-[460px] text-[14.5px] leading-relaxed text-[var(--muted)]">

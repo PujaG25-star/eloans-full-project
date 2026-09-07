@@ -263,7 +263,7 @@ function PageHeroImage({src,aspect,alt,crumbBox=DEFAULT_CRUMB}:{src:string;aspec
   </div>;
 }
 
-function PageHero({eyebrow,title,sub,crumb,image,imageAspect,crumbBox,art}:{eyebrow?:string;title:string;sub?:string;crumb?:string;image?:string;imageAspect?:string;crumbBox?:CrumbBox;art?:string}){
+function PageHero({eyebrow,title,sub,crumb,image,imageAspect,mobileImage,mobileAspect,crumbBox,art}:{eyebrow?:string;title:string;sub?:string;crumb?:string;image?:string;imageAspect?:string;mobileImage?:string;mobileAspect?:string;crumbBox?:CrumbBox;art?:string}){
   const {lang}=useLang();
   const [wide,setWide]=useState(typeof window!=='undefined'&&window.innerWidth>=900);
   const [artOk,setArtOk]=useState(true);
@@ -273,12 +273,13 @@ function PageHero({eyebrow,title,sub,crumb,image,imageAspect,crumbBox,art}:{eyeb
     return ()=>window.removeEventListener('resize',on);
   },[]);
   if(image&&imageAspect&&lang==='en'&&wide) return <PageHeroImage src={image} aspect={imageAspect} alt={title} crumbBox={crumbBox}/>;
-  /* Where the full banner cannot be used - narrow screens, or a language it
-     was not drawn in - it still appears as a background rather than being
-     dropped. Anchored right so the illustration shows and the artwork's own
-     baked-in headline stays off-frame, under a scrim heavy enough to keep the
-     live copy legible. */
-  const showImageBg=Boolean(image)&&artOk;
+  /* Two fallbacks for when the full banner cannot be used.
+     Narrow screens get the artwork as its own clear band above the copy -
+     cropped to the illustration so it reads properly at phone size.
+     Wide screens in a language the banner was not drawn in keep it as a
+     blurred backdrop, where there is room for copy over the top of it. */
+  const showImageBand=Boolean(mobileImage)&&artOk&&!wide;
+  const showImageBg=Boolean(image)&&artOk&&wide;
   /* `art` is decorative artwork with no baked-in copy, so unlike `image` it
      sits behind the live text: every language and every width keeps working. */
   const showArt=Boolean(art)&&artOk&&wide;
@@ -302,6 +303,12 @@ function PageHero({eyebrow,title,sub,crumb,image,imageAspect,crumbBox,art}:{eyeb
       <div className="pointer-events-none absolute inset-0" style={{background:HERO_IMG_SCRIM}}/>
     </>}
     {!showArt&&!showImageBg&&<div className="pointer-events-none absolute inset-0" style={{backgroundImage:DOTS,backgroundSize:'22px 22px',maskImage:'linear-gradient(to right,transparent 45%,#000 100%)'}}/>}
+    {/* Phone: a pre-cropped mobile asset - the illustration only, with the
+        baked-in headline already cut away - shown whole and unblurred above
+        the copy, so nothing of it is clipped at phone width. */}
+    {showImageBand&&<img src={mobileImage} alt="" aria-hidden="true" decoding="async" onError={()=>setArtOk(false)}
+      className="relative block w-full select-none"
+      style={{aspectRatio:mobileAspect,objectFit:'cover'}}/>}
     <div className={`relative mx-auto w-full max-w-[1200px] px-5 sm:px-8 ${showArt?'py-10 sm:py-12':'py-14 sm:py-20'}`}>
       {crumb&&<div className="mb-4 flex items-center gap-2 text-[12.5px] text-[var(--on-hero-soft)]"><Link to="/" className="hover:text-white">{t('Home')}</Link><span>/</span><span className="text-white">{t(crumb)}</span></div>}
       {eyebrow&&<div className="mb-3 text-[12px] font-bold uppercase tracking-[.14em] text-[var(--on-hero-dim)]">{t(eyebrow)}</div>}
@@ -321,7 +328,8 @@ export function LoansIndex(){
   return <>
     <PageHero eyebrow="Loan products" crumb="Loans" title="Every loan we broker, with real starting rates"
       sub={tf('{n} products across eight families of secured and unsecured lending. Each page sets out who it suits, what you need, what it costs and what to weigh up.',{n:products.length})}
-      image="/loans-hero.webp" imageAspect="1600 / 533"/>
+      image="/loans-hero.webp" imageAspect="1600 / 533"
+      mobileImage="/loans-hero-m.webp" mobileAspect="750 / 533"/>
     <Section>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div className="text-[14px] text-[var(--muted)]">{tf('{shown} of {total} products',{shown:list.length,total:loans.length})}</div>
@@ -545,6 +553,7 @@ export function BanksPage(){
     <PageHero eyebrow="Partner lenders" crumb="Banks" title="The banks and NBFCs behind your offer"
       sub="Every partner is RBI-registered. We route your application to the ones whose credit policy actually fits your profile."
       image="/banks-hero.webp" imageAspect="2172 / 724"
+      mobileImage="/banks-hero-m.webp" mobileAspect="1022 / 724"
       crumbBox={{left:'2.7%',top:'20.5%',width:'3.2%',height:'5.5%'}}/>
     <div className="border-b border-[var(--border)] bg-[var(--card)]">
       <div className="mx-auto w-full max-w-[1200px] px-5 py-3.5 text-[12.5px] text-[var(--muted)] sm:px-8">
@@ -1483,6 +1492,7 @@ export function CalculatorPage(){
     <PageHero eyebrow="Calculator" crumb="Calculator" title="Eighteen calculators, one set of formulas"
       sub="The same arithmetic lenders and fund houses use. Nothing here is recorded, and none of it touches your credit file."
       image="/calculator-hero.webp" imageAspect="2129 / 739"
+      mobileImage="/calculator-hero-m.webp" mobileAspect="949 / 739"
       crumbBox={{left:'3.6%',top:'19.5%',width:'3.4%',height:'6%'}}/>
     <Section>
       <CalcPanel key={calc.id} calc={calc}/>
