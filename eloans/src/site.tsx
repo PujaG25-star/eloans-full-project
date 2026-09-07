@@ -263,6 +263,31 @@ const infoPageBanners:Record<string,HeroBanner>={
     mobileImage:'/cards-hero-m.webp',mobileAspect:'940 / 725',
     crumbBox:{left:'3.3%',top:'24.5%',width:'3.2%',height:'5%'},
   },
+  'rates/best':{
+    image:'/rates-best-hero.webp',imageAspect:'2170 / 725',
+    mobileImage:'/rates-best-hero-m.webp',mobileAspect:'860 / 725',
+    crumbBox:{left:'2.6%',top:'23.5%',width:'3.0%',height:'5%'},
+  },
+  'rates/alerts':{
+    image:'/rates-alerts-hero.webp',imageAspect:'2163 / 727',
+    mobileImage:'/rates-alerts-hero-m.webp',mobileAspect:'1103 / 727',
+    crumbBox:{left:'3.1%',top:'23.5%',width:'3.0%',height:'5%'},
+  },
+  'rates/track':{
+    image:'/rates-track-hero.webp',imageAspect:'2172 / 724',
+    mobileImage:'/rates-track-hero-m.webp',mobileAspect:'1122 / 724',
+    crumbBox:{left:'3.1%',top:'23.5%',width:'3.0%',height:'5%'},
+  },
+  'rates/lowest':{
+    image:'/rates-lowest-hero.webp',imageAspect:'2164 / 727',
+    mobileImage:'/rates-lowest-hero-m.webp',mobileAspect:'1014 / 727',
+    crumbBox:{left:'3.0%',top:'23.5%',width:'3.0%',height:'5%'},
+  },
+  'rates/pre-approved':{
+    image:'/rates-pre-approved-hero.webp',imageAspect:'2172 / 724',
+    mobileImage:'/rates-pre-approved-hero-m.webp',mobileAspect:'972 / 724',
+    crumbBox:{left:'3.0%',top:'23%',width:'3.0%',height:'5%'},
+  },
 };
 
 /* Loan product pages are also rendered by one component, so their artwork is
@@ -672,7 +697,10 @@ export function ComparePage(){
   const best=rows[0];
   return <>
     <PageHero eyebrow="Compare" crumb="Compare" title="Put every lender side by side"
-      sub="Sort by what matters to you. The cheapest headline rate is not always the cheapest loan once fees are counted."/>
+      sub="Sort by what matters to you. The cheapest headline rate is not always the cheapest loan once fees are counted."
+      image="/rates-compare-hero.webp" imageAspect="2164 / 727"
+      mobileImage="/rates-compare-hero-m.webp" mobileAspect="979 / 727"
+      crumbBox={{left:'3.0%',top:'23.5%',width:'3.0%',height:'5%'}}/>
     <Section>
       <div className="mb-6 flex flex-wrap items-center gap-2">
         <span className="text-[13px] font-semibold text-[var(--muted)]">{t('Sort by')}</span>
