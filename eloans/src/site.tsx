@@ -265,6 +265,52 @@ const infoPageBanners:Record<string,HeroBanner>={
   },
 };
 
+/* Loan product pages are also rendered by one component, so their artwork is
+   looked up by product id the same way. A product with no entry keeps the
+   plain gradient hero. */
+const loanBanners:Record<string,HeroBanner>={
+  'personal':{
+    image:'/loan-personal-hero.webp',imageAspect:'2167 / 725',
+    mobileImage:'/loan-personal-hero-m.webp',mobileAspect:'987 / 725',
+    crumbBox:{left:'3.3%',top:'27%',width:'3.0%',height:'5%'},
+  },
+  'instant-personal':{
+    image:'/loan-instant-personal-hero.webp',imageAspect:'2167 / 726',
+    mobileImage:'/loan-instant-personal-hero-m.webp',mobileAspect:'967 / 726',
+    crumbBox:{left:'3.5%',top:'23.5%',width:'3.0%',height:'5%'},
+  },
+  'salary-advance':{
+    image:'/loan-salary-advance-hero.webp',imageAspect:'2164 / 727',
+    mobileImage:'/loan-salary-advance-hero-m.webp',mobileAspect:'1124 / 727',
+    crumbBox:{left:'3.4%',top:'23.5%',width:'3.0%',height:'5%'},
+  },
+  'debt-consolidation':{
+    image:'/loan-debt-consolidation-hero.webp',imageAspect:'2170 / 725',
+    mobileImage:'/loan-debt-consolidation-hero-m.webp',mobileAspect:'1080 / 725',
+    crumbBox:{left:'2.6%',top:'24%',width:'3.0%',height:'5%'},
+  },
+  'medical-emergency':{
+    image:'/loan-medical-emergency-hero.webp',imageAspect:'2172 / 724',
+    mobileImage:'/loan-medical-emergency-hero-m.webp',mobileAspect:'1022 / 724',
+    crumbBox:{left:'3.3%',top:'26.5%',width:'2.9%',height:'5%'},
+  },
+  'travel':{
+    image:'/loan-travel-hero.webp',imageAspect:'2172 / 724',
+    mobileImage:'/loan-travel-hero-m.webp',mobileAspect:'1042 / 724',
+    crumbBox:{left:'3.3%',top:'26%',width:'2.9%',height:'5%'},
+  },
+  'wedding':{
+    image:'/loan-wedding-hero.webp',imageAspect:'2155 / 730',
+    mobileImage:'/loan-wedding-hero-m.webp',mobileAspect:'975 / 730',
+    crumbBox:{left:'3.3%',top:'24%',width:'3.0%',height:'5%'},
+  },
+  'business':{
+    image:'/loan-business-hero.webp',imageAspect:'2164 / 727',
+    mobileImage:'/loan-business-hero-m.webp',mobileAspect:'1154 / 727',
+    crumbBox:{left:'3.4%',top:'24%',width:'3.1%',height:'5%'},
+  },
+};
+
 function PageHeroImage({src,aspect,alt,crumbBox=DEFAULT_CRUMB}:{src:string;aspect:string;alt:string;crumbBox?:CrumbBox}){
   const {t}=useLang();
   const [ok,setOk]=useState(true);
@@ -430,7 +476,7 @@ export function LoanProduct(){
   const rateNum=parseFloat(p.rate||'')||9;
   const productFaqs=p.faqs;
   return <>
-    <PageHero eyebrow={fam?.name??'Loan product'} crumb={t(loan.name)} title={t(loan.name)} sub={p.what.split('. ')[0]+'.'}/>
+    <PageHero eyebrow={fam?.name??'Loan product'} crumb={t(loan.name)} title={t(loan.name)} sub={p.what.split('. ')[0]+'.'} {...loanBanners[p.id]}/>
     <div className="border-b border-[var(--border)] bg-[var(--card)]">
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-2 gap-px px-5 sm:px-8 lg:grid-cols-4">
         {([['Starting rate',p.rate?`${p.rate} p.a.`:t('On request')],['Loan amount',p.max],['Tenure',p.tenure],['Category',fam?.name??'Loan']] as [string,string][]).map(([k,v])=>(
