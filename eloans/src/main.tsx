@@ -551,7 +551,12 @@ function Dashboard(){
   },[]);
   /* The artwork has English copy baked in, so only use it for English.
      Every other language keeps the live, translated hero. */
-  const useBanner=lang==='en'&&heroWide&&bannerIdx<heroBannerSources.length;
+  const bannerLoadable=bannerIdx<heroBannerSources.length;
+  const useBanner=lang==='en'&&heroWide&&bannerLoadable;
+  /* Where the banner cannot be used as-is - narrow screens, or a language it
+     was not drawn in - it still appears as a background behind the live copy
+     rather than being dropped entirely. */
+  const useBannerBg=!useBanner&&bannerLoadable;
   const bannerOk=false;
   return <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
     <div ref={heroRef} className="min-w-0 space-y-5">
@@ -574,7 +579,20 @@ function Dashboard(){
                 style={{left:h.left,top:h.top,width:h.width,height:h.height}}/>
             ))}
           </div>
-        : <div className="@container relative overflow-hidden rounded-[16px] bg-[var(--hero-tint)] px-6 py-8 sm:px-9 sm:py-10">
+        : <div className={`@container relative overflow-hidden rounded-[16px] px-6 py-8 sm:px-9 sm:py-10 ${useBannerBg?'':'bg-[var(--hero-tint)]'}`}>
+        {useBannerBg&&<>
+          {/* Blurred: the artwork carries its own headline, EMI figures and
+              book spines, which would otherwise read as competing text behind
+              the live copy. Scaled up slightly so the blur has no soft edge. */}
+          <img src={heroBannerSources[bannerIdx]} alt="" aria-hidden="true" decoding="async"
+            onError={()=>setBannerIdx(i=>i+1)}
+            className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-[88%_center]"
+            style={{filter:'blur(3px)',transform:'scale(1.06)'}}/>
+          {/* This hero keeps dark copy on a light panel, so the scrim is the
+              hero tint rather than a dark wash - a dark one would make the
+              existing text unreadable. */}
+          <div className="pointer-events-none absolute inset-0" style={{background:'linear-gradient(to bottom,color-mix(in srgb,var(--hero-tint) 90%,transparent),color-mix(in srgb,var(--hero-tint) 80%,transparent))'}}/>
+        </>}
         <div className="pointer-events-none absolute -right-24 -top-28 h-[320px] w-[320px] rounded-full bg-[var(--accent)]/10 blur-3xl"/>
         <div className={`relative max-w-[760px] ${bannerOk?'@min-[640px]:max-w-[54%]':''}`}>
           <div>

@@ -18,6 +18,9 @@ const DOTS='radial-gradient(circle at 1px 1px,var(--hero-dots) 1px,transparent 0
    no seam is visible where they meet. */
 const ART_BASE='linear-gradient(180deg,#011850 0%,#010e39 100%)';
 const ART_SCRIM='linear-gradient(to right,#01174b 0%,rgba(1,21,73,.97) 30%,rgba(1,20,70,.72) 46%,rgba(1,20,70,.22) 60%,transparent 72%)';
+/* Sits over a banner used as a background. Dark enough for white copy to pass
+   contrast over any part of the artwork, light enough that the image reads. */
+const HERO_IMG_SCRIM='linear-gradient(to bottom,rgba(11,6,38,.86) 0%,rgba(11,6,38,.72) 55%,rgba(11,6,38,.86) 100%)';
 
 const nav:[string,string,string][]=[
   ['Home','/','LayoutGrid'],
@@ -270,6 +273,12 @@ function PageHero({eyebrow,title,sub,crumb,image,imageAspect,crumbBox,art}:{eyeb
     return ()=>window.removeEventListener('resize',on);
   },[]);
   if(image&&imageAspect&&lang==='en'&&wide) return <PageHeroImage src={image} aspect={imageAspect} alt={title} crumbBox={crumbBox}/>;
+  /* Where the full banner cannot be used - narrow screens, or a language it
+     was not drawn in - it still appears as a background rather than being
+     dropped. Anchored right so the illustration shows and the artwork's own
+     baked-in headline stays off-frame, under a scrim heavy enough to keep the
+     live copy legible. */
+  const showImageBg=Boolean(image)&&artOk;
   /* `art` is decorative artwork with no baked-in copy, so unlike `image` it
      sits behind the live text: every language and every width keeps working. */
   const showArt=Boolean(art)&&artOk&&wide;
@@ -283,7 +292,16 @@ function PageHero({eyebrow,title,sub,crumb,image,imageAspect,crumbBox,art}:{eyeb
         className="pointer-events-none absolute inset-y-0 right-0 h-full w-[64%] select-none object-cover object-[72%_center]"/>
       <div className="pointer-events-none absolute inset-0" style={{background:ART_SCRIM}}/>
     </>}
-    {!showArt&&<div className="pointer-events-none absolute inset-0" style={{backgroundImage:DOTS,backgroundSize:'22px 22px',maskImage:'linear-gradient(to right,transparent 45%,#000 100%)'}}/>}
+    {showImageBg&&<>
+      {/* Blurred: these banners carry their own headline and labels, which
+          would otherwise read as competing text behind the live copy. Scaled
+          up slightly so the blur leaves no soft edge. */}
+      <img src={image} alt="" aria-hidden="true" decoding="async" onError={()=>setArtOk(false)}
+        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-[88%_center]"
+        style={{filter:'blur(3px)',transform:'scale(1.06)'}}/>
+      <div className="pointer-events-none absolute inset-0" style={{background:HERO_IMG_SCRIM}}/>
+    </>}
+    {!showArt&&!showImageBg&&<div className="pointer-events-none absolute inset-0" style={{backgroundImage:DOTS,backgroundSize:'22px 22px',maskImage:'linear-gradient(to right,transparent 45%,#000 100%)'}}/>}
     <div className={`relative mx-auto w-full max-w-[1200px] px-5 sm:px-8 ${showArt?'py-10 sm:py-12':'py-14 sm:py-20'}`}>
       {crumb&&<div className="mb-4 flex items-center gap-2 text-[12.5px] text-[var(--on-hero-soft)]"><Link to="/" className="hover:text-white">{t('Home')}</Link><span>/</span><span className="text-white">{t(crumb)}</span></div>}
       {eyebrow&&<div className="mb-3 text-[12px] font-bold uppercase tracking-[.14em] text-[var(--on-hero-dim)]">{t(eyebrow)}</div>}
