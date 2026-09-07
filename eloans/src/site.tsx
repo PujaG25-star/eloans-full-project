@@ -318,6 +318,36 @@ const infoPageBanners:Record<string,HeroBanner>={
     mobileImage:'/ins-buy-renew-hero-m.webp',mobileAspect:'669 / 620',
     crumbBox:{left:'3.9%',top:'25%',width:'3.5%',height:'5%'},
   },
+  'investments/live-market':{
+    image:'/inv-live-market-hero.webp',imageAspect:'1884 / 835',
+    mobileImage:'/inv-live-market-hero-m.webp',mobileAspect:'934 / 660',
+    crumbBox:{left:'3.9%',top:'22.5%',width:'3.9%',height:'5%'},
+  },
+  'investments/mutual-funds':{
+    image:'/inv-mutual-funds-hero.webp',imageAspect:'1884 / 835',
+    mobileImage:'/inv-mutual-funds-hero-m.webp',mobileAspect:'1004 / 680',
+    crumbBox:{left:'3.7%',top:'24%',width:'3.8%',height:'5%'},
+  },
+  'investments/digital-gold':{
+    image:'/inv-digital-gold-hero.webp',imageAspect:'1884 / 835',
+    mobileImage:'/inv-digital-gold-hero-m.webp',mobileAspect:'1004 / 700',
+    crumbBox:{left:'3.9%',top:'23.6%',width:'3.7%',height:'5%'},
+  },
+  'investments/stocks':{
+    image:'/inv-stocks-hero.webp',imageAspect:'1884 / 835',
+    mobileImage:'/inv-stocks-hero-m.webp',mobileAspect:'1024 / 710',
+    crumbBox:{left:'3.8%',top:'23.6%',width:'3.6%',height:'5%'},
+  },
+  'investments/fixed-deposits':{
+    image:'/inv-fixed-deposits-hero.webp',imageAspect:'1884 / 835',
+    mobileImage:'/inv-fixed-deposits-hero-m.webp',mobileAspect:'1074 / 670',
+    crumbBox:{left:'3.9%',top:'23.6%',width:'3.5%',height:'5%'},
+  },
+  'investments/portfolio':{
+    image:'/inv-portfolio-hero.webp',imageAspect:'1884 / 835',
+    mobileImage:'/inv-portfolio-hero-m.webp',mobileAspect:'869 / 710',
+    crumbBox:{left:'3.7%',top:'23%',width:'3.8%',height:'5%'},
+  },
 };
 
 /* Loan product pages are also rendered by one component, so their artwork is
