@@ -1463,7 +1463,9 @@ export function CalculatorPage(){
   const calc=calculators.find(c=>c.id===id)!;
   return <>
     <PageHero eyebrow="Calculator" crumb="Calculator" title="Eighteen calculators, one set of formulas"
-      sub="The same arithmetic lenders and fund houses use. Nothing here is recorded, and none of it touches your credit file."/>
+      sub="The same arithmetic lenders and fund houses use. Nothing here is recorded, and none of it touches your credit file."
+      image="/calculator-hero.webp" imageAspect="2129 / 739"
+      crumbBox={{left:'3.6%',top:'19.5%',width:'3.4%',height:'6%'}}/>
     <Section>
       <CalcPanel key={calc.id} calc={calc}/>
     </Section>
