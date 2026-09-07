@@ -519,37 +519,62 @@ const sampleTestimonials:[string,string,string][]=[
   ['The eligibility check gave me a realistic figure before I applied anywhere, so I was not left with a rejection on my record.','First-time borrower, Bhubaneswar','Eligibility check'],
 ];
 
-/* Served from public/. WebP first (~104KB vs ~1.5MB for the same PNG); a
+/* Served from public/. WebP first (~128KB vs ~1.5MB for the same PNG); a
    dropped-in .png still works as a fallback, and if neither exists the hero
-   falls back to the plain tinted panel rather than a broken image. */
+   falls back to the live-text panel rather than a broken image. */
 const heroBannerSources=['/hero-banner.webp','/hero-banner.png'];
+const HERO_ASPECT='1999 / 786';
+
+/* The banner's own headline, buttons and feature labels are baked in, so the
+   two calls to action are re-created as transparent links sitting exactly on
+   top of them. Percentages are of the artwork's own box. */
+const heroHotspots:{to:string;label:string;left:string;top:string;width:string;height:string}[]=[
+  {to:'/loans',                 label:'Explore Loans', left:'4.6%',  top:'65.6%', width:'14.8%', height:'9.6%'},
+  {to:'/resources/loan-guides', label:'How It Works',  left:'20.1%', top:'65.6%', width:'13.6%', height:'9.6%'},
+];
 
 function Dashboard(){
-  const {t:tr}=useLang();
+  const {t:tr,lang}=useLang();
   const [bannerIdx,setBannerIdx]=useState(0);
-  const bannerOk=bannerIdx<heroBannerSources.length;
+  /* Measure the hero itself rather than the viewport: the 360px right rail
+     and 260px sidebar mean hero width is not a simple function of window
+     width. Below this the artwork's baked-in copy is unreadable and its
+     painted buttons are too small to tap. */
+  const heroRef=useRef<HTMLDivElement|null>(null);
+  const [heroWide,setHeroWide]=useState(false);
+  useEffect(()=>{
+    const el=heroRef.current;
+    if(!el||typeof ResizeObserver==='undefined') return;
+    const ro=new ResizeObserver(([e])=>setHeroWide(e.contentRect.width>=600));
+    ro.observe(el);
+    return ()=>ro.disconnect();
+  },[]);
+  /* The artwork has English copy baked in, so only use it for English.
+     Every other language keeps the live, translated hero. */
+  const useBanner=lang==='en'&&heroWide&&bannerIdx<heroBannerSources.length;
+  const bannerOk=false;
   return <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
-    <div className="min-w-0 space-y-5">
+    <div ref={heroRef} className="min-w-0 space-y-5">
 
-      {/* hero */}
-      <div className="@container relative overflow-hidden rounded-[16px] bg-[var(--hero-tint)] px-6 py-8 sm:px-9 sm:py-10">
-        {/* Banner artwork. Its own headline and buttons sit on the left of the
-            source image, so it is anchored right to show the illustration and
-            keep that half clear for the live, translatable text below.
-            Hidden on narrow cards, where there is no room beside the copy. */}
-        {bannerOk&&<>
-          <img
-            src={heroBannerSources[bannerIdx]}
-            alt=""
-            aria-hidden="true"
-            decoding="async"
-            onError={()=>setBannerIdx(i=>i+1)}
-            className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[46%] select-none object-cover object-right @min-[640px]:block"
-          />
-          {/* Fades the artwork out under the copy so the text stays legible
-              in both themes. */}
-          <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[var(--hero-tint)] from-45% to-transparent to-66% @min-[640px]:block"/>
-        </>}
+      {/* hero — banner artwork, edge to edge */}
+      {useBanner
+        ? <div className="relative overflow-hidden rounded-[16px] bg-[var(--hero-tint)]">
+            <img
+              src={heroBannerSources[bannerIdx]}
+              alt={tr('Smart Loans. Simple Decisions.')}
+              decoding="async"
+              onError={()=>setBannerIdx(i=>i+1)}
+              className="block w-full select-none"
+              style={{aspectRatio:HERO_ASPECT,objectFit:'cover'}}
+            />
+            {/* Transparent links over the artwork's painted buttons. */}
+            {heroHotspots.map(h=>(
+              <Link key={h.to} to={h.to} aria-label={tr(h.label)}
+                className="absolute rounded-[10px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+                style={{left:h.left,top:h.top,width:h.width,height:h.height}}/>
+            ))}
+          </div>
+        : <div className="@container relative overflow-hidden rounded-[16px] bg-[var(--hero-tint)] px-6 py-8 sm:px-9 sm:py-10">
         <div className="pointer-events-none absolute -right-24 -top-28 h-[320px] w-[320px] rounded-full bg-[var(--accent)]/10 blur-3xl"/>
         <div className={`relative max-w-[760px] ${bannerOk?'@min-[640px]:max-w-[54%]':''}`}>
           <div>
@@ -577,7 +602,7 @@ function Dashboard(){
           </div>
 
         </div>
-      </div>
+      </div>}
 
       {/* quick actions */}
       <Panel title="Quick Actions" className="mt-5 @container">
