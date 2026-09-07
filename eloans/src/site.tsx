@@ -258,6 +258,11 @@ const infoPageBanners:Record<string,HeroBanner>={
     mobileImage:'/credit-score-hero-m.webp',mobileAspect:'730 / 533',
     crumbBox:{left:'3.2%',top:'20.5%',width:'3.2%',height:'5.5%'},
   },
+  'cards/credit-cards':{
+    image:'/cards-hero.webp',imageAspect:'2170 / 725',
+    mobileImage:'/cards-hero-m.webp',mobileAspect:'940 / 725',
+    crumbBox:{left:'3.3%',top:'24.5%',width:'3.2%',height:'5%'},
+  },
 };
 
 function PageHeroImage({src,aspect,alt,crumbBox=DEFAULT_CRUMB}:{src:string;aspect:string;alt:string;crumbBox?:CrumbBox}){
@@ -684,7 +689,10 @@ export function ComparePage(){
 export function ServicesPage(){
   return <>
     <PageHero eyebrow="Services" crumb="Services" title="More than a rate comparison"
-      sub="Comparison gets you a shortlist. These are the services that get the loan actually sanctioned, at a price worth signing for."/>
+      sub="Comparison gets you a shortlist. These are the services that get the loan actually sanctioned, at a price worth signing for."
+      image="/services-hero.webp" imageAspect="1600 / 533"
+      mobileImage="/services-hero-m.webp" mobileAspect="740 / 533"
+      crumbBox={{left:'3.8%',top:'22%',width:'3.0%',height:'5%'}}/>
     <Section>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {services.map(([ttl,b,ic])=>(
@@ -793,7 +801,10 @@ export function ContactPage(){
   const field='w-full rounded-[10px] border border-[var(--border)] bg-[var(--card)] px-4 py-3 text-[14px] outline-none transition placeholder:text-[var(--muted-2)] focus:border-[var(--accent)]';
   return <>
     <PageHero eyebrow="Contact" crumb="Contact" title="Talk to a loan advisor"
-      sub="Tell us what you are trying to finance. An advisor will come back within one working day with the lenders worth your time."/>
+      sub="Tell us what you are trying to finance. An advisor will come back within one working day with the lenders worth your time."
+      image="/contact-hero.webp" imageAspect="1600 / 533"
+      mobileImage="/contact-hero-m.webp" mobileAspect="750 / 533"
+      crumbBox={{left:'3.0%',top:'23%',width:'3.0%',height:'5%'}}/>
     <Section>
       <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
         <Card className="p-6 sm:p-8">
@@ -1559,7 +1570,10 @@ const marketRates:[string,string,string][]=[
 export function ShareMarketPage(){
   return <>
     <PageHero eyebrow="Share Market" crumb="Share Market" title="Invest, and borrow against what you already own"
-      sub="Broking, mutual funds and securities-backed credit through SEBI-registered partners, so your portfolio can work without being liquidated."/>
+      sub="Broking, mutual funds and securities-backed credit through SEBI-registered partners, so your portfolio can work without being liquidated."
+      image="/share-market-hero.webp" imageAspect="2171 / 724"
+      mobileImage="/share-market-hero-m.webp" mobileAspect="741 / 724"
+      crumbBox={{left:'3.3%',top:'17.5%',width:'3.0%',height:'5%'}}/>
     <Section>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {marketServices.map(([ttl,b,ic])=>(
