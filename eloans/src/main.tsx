@@ -519,13 +519,15 @@ const sampleTestimonials:[string,string,string][]=[
   ['The eligibility check gave me a realistic figure before I applied anywhere, so I was not left with a rejection on my record.','First-time borrower, Bhubaneswar','Eligibility check'],
 ];
 
-/* Served from public/. Decorative, so if the file is absent the hero simply
-   falls back to the plain tinted panel rather than showing a broken image. */
-const heroBanner='/hero-banner.png';
+/* Served from public/. WebP first (~104KB vs ~1.5MB for the same PNG); a
+   dropped-in .png still works as a fallback, and if neither exists the hero
+   falls back to the plain tinted panel rather than a broken image. */
+const heroBannerSources=['/hero-banner.webp','/hero-banner.png'];
 
 function Dashboard(){
   const {t:tr}=useLang();
-  const [bannerOk,setBannerOk]=useState(true);
+  const [bannerIdx,setBannerIdx]=useState(0);
+  const bannerOk=bannerIdx<heroBannerSources.length;
   return <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
     <div className="min-w-0 space-y-5">
 
@@ -537,16 +539,16 @@ function Dashboard(){
             Hidden on narrow cards, where there is no room beside the copy. */}
         {bannerOk&&<>
           <img
-            src={heroBanner}
+            src={heroBannerSources[bannerIdx]}
             alt=""
             aria-hidden="true"
             decoding="async"
-            onError={()=>setBannerOk(false)}
-            className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[46%] select-none object-cover object-[86%_center] @min-[640px]:block"
+            onError={()=>setBannerIdx(i=>i+1)}
+            className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[46%] select-none object-cover object-right @min-[640px]:block"
           />
           {/* Fades the artwork out under the copy so the text stays legible
               in both themes. */}
-          <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[var(--hero-tint)] from-48% via-[var(--hero-tint)]/80 via-62% to-transparent @min-[640px]:block"/>
+          <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[var(--hero-tint)] from-45% to-transparent to-66% @min-[640px]:block"/>
         </>}
         <div className="pointer-events-none absolute -right-24 -top-28 h-[320px] w-[320px] rounded-full bg-[var(--accent)]/10 blur-3xl"/>
         <div className={`relative max-w-[760px] ${bannerOk?'@min-[640px]:max-w-[54%]':''}`}>
@@ -563,7 +565,9 @@ function Dashboard(){
                 <Icons.FileText size={17}/> {tr('How It Works')}
               </Link>
             </div>
-            <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-3 lg:grid-cols-4">
+            {/* Four across only when the banner is not narrowing this column;
+                otherwise the labels truncate. */}
+            <div className={`mt-7 grid grid-cols-2 gap-x-4 gap-y-3 ${bannerOk?'':'lg:grid-cols-4'}`}>
               {([['Percent','Compare Loan Costs'],['UserRoundCheck','Simple Application Journey'],['FileCheck2','Clear Documentation'],['LockKeyhole','Secure Experience']] as [string,string][]).map(([ic,label])=>(
                 <span key={label} className="flex items-center gap-2.5 text-[12.5px] font-medium text-[var(--ink-2)]">
                   <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--accent-soft)] text-[var(--accent-ink)]"><Icon name={ic as keyof typeof Icons} size={14}/></span>{tr(label)}
