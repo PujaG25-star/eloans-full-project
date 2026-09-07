@@ -255,22 +255,32 @@ function PageHeroImage({src,aspect,alt,crumbBox=DEFAULT_CRUMB}:{src:string;aspec
   </div>;
 }
 
-function PageHero({eyebrow,title,sub,crumb,image,imageAspect,crumbBox}:{eyebrow?:string;title:string;sub?:string;crumb?:string;image?:string;imageAspect?:string;crumbBox?:CrumbBox}){
+function PageHero({eyebrow,title,sub,crumb,image,imageAspect,crumbBox,art}:{eyebrow?:string;title:string;sub?:string;crumb?:string;image?:string;imageAspect?:string;crumbBox?:CrumbBox;art?:string}){
   const {lang}=useLang();
   const [wide,setWide]=useState(typeof window!=='undefined'&&window.innerWidth>=900);
+  const [artOk,setArtOk]=useState(true);
   useEffect(()=>{
     const on=()=>setWide(window.innerWidth>=900);
     on(); window.addEventListener('resize',on);
     return ()=>window.removeEventListener('resize',on);
   },[]);
   if(image&&imageAspect&&lang==='en'&&wide) return <PageHeroImage src={image} aspect={imageAspect} alt={title} crumbBox={crumbBox}/>;
+  /* `art` is decorative artwork with no baked-in copy, so unlike `image` it
+     sits behind the live text: every language and every width keeps working. */
+  const showArt=Boolean(art)&&artOk&&wide;
   return <div className="relative overflow-hidden" style={{background:NAVY}}>
+    {showArt&&<>
+      <img src={art} alt="" aria-hidden="true" decoding="async" onError={()=>setArtOk(false)}
+        className="pointer-events-none absolute inset-y-0 right-0 h-full w-[52%] select-none object-cover object-[62%_center]"/>
+      <div className="pointer-events-none absolute inset-0"
+        style={{background:`linear-gradient(to right, ${NAVY} 34%, ${NAVY}d9 48%, transparent 72%)`}}/>
+    </>}
     <div className="pointer-events-none absolute inset-0" style={{backgroundImage:DOTS,backgroundSize:'22px 22px',maskImage:'linear-gradient(to right,transparent 45%,#000 100%)'}}/>
     <div className="relative mx-auto w-full max-w-[1200px] px-5 py-14 sm:px-8 sm:py-20">
       {crumb&&<div className="mb-4 flex items-center gap-2 text-[12.5px] text-[var(--on-hero-soft)]"><Link to="/" className="hover:text-white">{t('Home')}</Link><span>/</span><span className="text-white">{t(crumb)}</span></div>}
       {eyebrow&&<div className="mb-3 text-[12px] font-bold uppercase tracking-[.14em] text-[var(--on-hero-dim)]">{t(eyebrow)}</div>}
-      <h1 className="max-w-[760px] text-[34px] font-black leading-[1.08] tracking-[-.025em] text-white sm:text-[44px]">{t(title)}</h1>
-      {sub&&<p className="mt-4 max-w-[620px] text-[15.5px] leading-relaxed text-[var(--on-hero-soft)]">{t(sub)}</p>}
+      <h1 className={`text-[34px] font-black leading-[1.08] tracking-[-.025em] text-white sm:text-[44px] ${showArt?'max-w-[50%]':'max-w-[760px]'}`}>{t(title)}</h1>
+      {sub&&<p className={`mt-4 text-[15.5px] leading-relaxed text-[var(--on-hero-soft)] ${showArt?'max-w-[46%]':'max-w-[620px]'}`}>{t(sub)}</p>}
     </div>
   </div>;
 }
@@ -978,7 +988,8 @@ const insureFaqs:[string,string][]=[
 export function InsurancePage(){
   return <>
     <PageHero eyebrow="Insurances" crumb="Insurances" title="Cover that is priced honestly, not bundled quietly"
-      sub="Seven categories of protection from our partner insurers. Compare the premium against the cover, and buy only what you actually need."/>
+      sub="Seven categories of protection from our partner insurers. Compare the premium against the cover, and buy only what you actually need."
+      art="/insurance-art.webp"/>
     <Section>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {insurance.map(([id,name,desc,cover,premium,icon])=>(
