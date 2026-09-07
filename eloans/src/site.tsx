@@ -238,21 +238,24 @@ function Faq({items}:{items:[string,string][]}){
    copy. The image is English-only and its text is unreadable when small, so
    it is used only for English and only above a usable width; otherwise the
    live, translated hero renders as normal. */
-function PageHeroImage({src,aspect}:{src:string;aspect:string}){
+type CrumbBox={left:string;top:string;width:string;height:string};
+const DEFAULT_CRUMB:CrumbBox={left:'3.1%',top:'20%',width:'3.6%',height:'6%'};
+
+function PageHeroImage({src,aspect,alt,crumbBox=DEFAULT_CRUMB}:{src:string;aspect:string;alt:string;crumbBox?:CrumbBox}){
   const {t}=useLang();
   const [ok,setOk]=useState(true);
   if(!ok) return null;
   return <div className="relative">
-    <img src={src} alt={t('Loan products')} decoding="async" onError={()=>setOk(false)}
+    <img src={src} alt={t(alt)} decoding="async" onError={()=>setOk(false)}
       className="block w-full select-none" style={{aspectRatio:aspect,objectFit:'cover'}}/>
     {/* The breadcrumb is painted into the artwork; keep "Home" clickable. */}
     <Link to="/" aria-label={t('Home')}
       className="absolute rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-      style={{left:'3.1%',top:'20%',width:'3.6%',height:'6%'}}/>
+      style={crumbBox}/>
   </div>;
 }
 
-function PageHero({eyebrow,title,sub,crumb,image,imageAspect}:{eyebrow?:string;title:string;sub?:string;crumb?:string;image?:string;imageAspect?:string}){
+function PageHero({eyebrow,title,sub,crumb,image,imageAspect,crumbBox}:{eyebrow?:string;title:string;sub?:string;crumb?:string;image?:string;imageAspect?:string;crumbBox?:CrumbBox}){
   const {lang}=useLang();
   const [wide,setWide]=useState(typeof window!=='undefined'&&window.innerWidth>=900);
   useEffect(()=>{
@@ -260,7 +263,7 @@ function PageHero({eyebrow,title,sub,crumb,image,imageAspect}:{eyebrow?:string;t
     on(); window.addEventListener('resize',on);
     return ()=>window.removeEventListener('resize',on);
   },[]);
-  if(image&&imageAspect&&lang==='en'&&wide) return <PageHeroImage src={image} aspect={imageAspect}/>;
+  if(image&&imageAspect&&lang==='en'&&wide) return <PageHeroImage src={image} aspect={imageAspect} alt={title} crumbBox={crumbBox}/>;
   return <div className="relative overflow-hidden" style={{background:NAVY}}>
     <div className="pointer-events-none absolute inset-0" style={{backgroundImage:DOTS,backgroundSize:'22px 22px',maskImage:'linear-gradient(to right,transparent 45%,#000 100%)'}}/>
     <div className="relative mx-auto w-full max-w-[1200px] px-5 py-14 sm:px-8 sm:py-20">
@@ -501,7 +504,9 @@ export function LoanProduct(){
 export function BanksPage(){
   return <>
     <PageHero eyebrow="Partner lenders" crumb="Banks" title="The banks and NBFCs behind your offer"
-      sub="Every partner is RBI-registered. We route your application to the ones whose credit policy actually fits your profile."/>
+      sub="Every partner is RBI-registered. We route your application to the ones whose credit policy actually fits your profile."
+      image="/banks-hero.webp" imageAspect="2172 / 724"
+      crumbBox={{left:'2.7%',top:'20.5%',width:'3.2%',height:'5.5%'}}/>
     <div className="border-b border-[var(--border)] bg-[var(--card)]">
       <div className="mx-auto w-full max-w-[1200px] px-5 py-3.5 text-[12.5px] text-[var(--muted)] sm:px-8">
         {t('Personal loan starting rates as published by each lender,')} {t(RATES_AS_OF)}{t('. Advertised minimums for the strongest profiles — your offer may differ.')}
