@@ -796,13 +796,20 @@ function Dashboard(){
     {/* ---------- right rail ---------- */}
     <aside className="space-y-4 xl:sticky xl:top-[88px]">
       <div className="relative overflow-hidden rounded-[14px] border border-[var(--border)] bg-[var(--card)] p-5">
-        <ClipboardArt className="pointer-events-none absolute -bottom-2 right-1 w-[104px]"/>
+        {/* The banner artwork this came from carries its own copy and button,
+            which would render ~6px tall in this 360px rail. Only its
+            illustration is used, so the text below stays live and translated. */}
+        <img src="/eligibility-art.webp" alt="" aria-hidden="true" decoding="async"
+          className="art-light-only pointer-events-none absolute -bottom-2 -right-1 w-[118px] select-none"/>
+        <ClipboardArt className="art-dark-only pointer-events-none absolute -bottom-2 right-1 w-[104px]"/>
         <div className="relative max-w-[190px]">
           <h3 className="text-[16px] font-extrabold leading-snug tracking-[-.01em] text-[var(--ink-strong)]">{t('Check your eligibility in 2 minutes')}</h3>
           <p className="mt-1.5 text-[12.5px] leading-relaxed text-[var(--muted)]">{t('Get loan options that may be suitable for your profile.')}</p>
           <Link to="/eligibility" className="mt-4 inline-flex items-center gap-2 rounded-[9px] bg-[var(--accent)] px-4 py-2.5 text-[13px] font-bold text-white transition hover:bg-[var(--accent-hover)]">{t('Check Now')} <Icons.ArrowRight size={15}/></Link>
         </div>
-        <p className="relative mt-4 text-[11px] leading-relaxed text-[var(--muted-2)]">{t('Eligibility results are indicative and do not guarantee loan approval.')}</p>
+        {/* Kept clear of the corner artwork, which is opaque unlike the vector
+            it replaced. */}
+        <p className="relative mt-4 max-w-[196px] text-[11px] leading-relaxed text-[var(--muted-2)]">{t('Eligibility results are indicative and do not guarantee loan approval.')}</p>
       </div>
 
       <AdSlot/>

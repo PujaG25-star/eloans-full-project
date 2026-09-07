@@ -166,3 +166,8 @@ html{transition:background-color .2s ease}
 @keyframes promoIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 .promo-in{animation:promoIn .26s cubic-bezier(.2,.8,.3,1) both}
 @media (prefers-reduced-motion:reduce){.promo-in{animation:none}}
+
+/* Raster artwork with a baked-in light background is only usable on the light
+   theme; the dark theme keeps the vector illustration, which adapts. */
+html[data-theme="dark"] .art-light-only{display:none}
+html:not([data-theme="dark"]) .art-dark-only{display:none}
