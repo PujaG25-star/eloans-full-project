@@ -249,6 +249,17 @@ function Faq({items}:{items:[string,string][]}){
 type CrumbBox={left:string;top:string;width:string;height:string};
 const DEFAULT_CRUMB:CrumbBox={left:'3.1%',top:'20%',width:'3.6%',height:'6%'};
 
+/* Every info page is rendered by one component, so a page that has its own
+   banner artwork is looked up by id here rather than wired at a call site. */
+type HeroBanner={image:string;imageAspect:string;mobileImage:string;mobileAspect:string;crumbBox?:CrumbBox};
+const infoPageBanners:Record<string,HeroBanner>={
+  'credit/score':{
+    image:'/credit-score-hero.webp',imageAspect:'1600 / 533',
+    mobileImage:'/credit-score-hero-m.webp',mobileAspect:'730 / 533',
+    crumbBox:{left:'3.2%',top:'20.5%',width:'3.2%',height:'5.5%'},
+  },
+};
+
 function PageHeroImage({src,aspect,alt,crumbBox=DEFAULT_CRUMB}:{src:string;aspect:string;alt:string;crumbBox?:CrumbBox}){
   const {t}=useLang();
   const [ok,setOk]=useState(true);
@@ -716,7 +727,9 @@ export function ServicesPage(){
 export function AboutPage(){
   return <>
     <PageHero eyebrow="About us" crumb="About" title="We built eLoans because borrowing in India is needlessly opaque"
-      sub="Two of our founders spent a decade inside bank credit teams. They watched good borrowers accept bad rates simply because nobody showed them the alternative."/>
+      sub="Two of our founders spent a decade inside bank credit teams. They watched good borrowers accept bad rates simply because nobody showed them the alternative."
+      image="/about-hero.webp" imageAspect="1600 / 533"
+      mobileImage="/about-hero-m.webp" mobileAspect="680 / 533"/>
     <Section>
       <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
         <div className="space-y-5 text-[15px] leading-relaxed text-[var(--ink-2)]">
@@ -970,7 +983,7 @@ export function InfoPageView(){
   if(!page) return <NotFound/>;
   const siblings=infoPages.filter(p=>p.group===page.group&&p.id!==page.id);
   return <>
-    <PageHero eyebrow={page.eyebrow} crumb={page.title} title={page.title} sub={page.sub}/>
+    <PageHero eyebrow={page.eyebrow} crumb={page.title} title={page.title} sub={page.sub} {...infoPageBanners[page.id]}/>
     <Section>
       <div className="mx-auto max-w-[860px] space-y-6">
         {page.blocks.map((b,i)=><BlockView key={i} b={b}/>)}
@@ -1630,7 +1643,10 @@ const corridors:[string,string,string,string][]=[
 export function GlobalBusinessPage(){
   return <>
     <PageHero eyebrow="Global Business" crumb="Global Business" title="Finance that crosses borders without losing the plot"
-      sub="NRI lending, trade finance and cross-border payments through partner banks with correspondent relationships in more than forty markets."/>
+      sub="NRI lending, trade finance and cross-border payments through partner banks with correspondent relationships in more than forty markets."
+      image="/global-hero.webp" imageAspect="2172 / 724"
+      mobileImage="/global-hero-m.webp" mobileAspect="752 / 684"
+      crumbBox={{left:'3.4%',top:'21%',width:'3.2%',height:'5%'}}/>
     <div className="border-b border-[var(--border)] bg-[var(--card)]">
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-2 gap-px px-5 sm:px-8 lg:grid-cols-4">
         {([['40+','Markets covered'],['12','NRI lending corridors'],['$180M','Trade volume facilitated'],['2–5 days','Typical LC issuance']] as [string,string][]).map(([v,l])=>(
