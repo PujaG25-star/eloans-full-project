@@ -314,39 +314,39 @@ const infoPageBanners:Record<string,HeroBanner>={
     crumbBox:{left:'3.2%',top:'23.5%',width:'2.9%',height:'5%'},
   },
   'insurance/buy-renew':{
-    image:'/ins-buy-renew-hero.webp',imageAspect:'1884 / 835',
+    image:'/ins-buy-renew-hero.webp',imageAspect:'3 / 1',
     mobileImage:'/ins-buy-renew-hero-m.webp',mobileAspect:'669 / 620',
-    crumbBox:{left:'3.9%',top:'25%',width:'3.5%',height:'5%'},
+    crumbBox:{left:'3.9%',top:'16.5%',width:'3.5%',height:'6%'},
   },
   'investments/live-market':{
-    image:'/inv-live-market-hero.webp',imageAspect:'1884 / 835',
+    image:'/inv-live-market-hero.webp',imageAspect:'3 / 1',
     mobileImage:'/inv-live-market-hero-m.webp',mobileAspect:'934 / 660',
-    crumbBox:{left:'3.9%',top:'22.5%',width:'3.9%',height:'5%'},
+    crumbBox:{left:'3.9%',top:'14%',width:'3.9%',height:'6%'},
   },
   'investments/mutual-funds':{
-    image:'/inv-mutual-funds-hero.webp',imageAspect:'1884 / 835',
+    image:'/inv-mutual-funds-hero.webp',imageAspect:'3 / 1',
     mobileImage:'/inv-mutual-funds-hero-m.webp',mobileAspect:'1004 / 680',
-    crumbBox:{left:'3.7%',top:'24%',width:'3.8%',height:'5%'},
+    crumbBox:{left:'3.7%',top:'14.8%',width:'3.8%',height:'6%'},
   },
   'investments/digital-gold':{
-    image:'/inv-digital-gold-hero.webp',imageAspect:'1884 / 835',
+    image:'/inv-digital-gold-hero.webp',imageAspect:'3 / 1',
     mobileImage:'/inv-digital-gold-hero-m.webp',mobileAspect:'1004 / 700',
-    crumbBox:{left:'3.9%',top:'23.6%',width:'3.7%',height:'5%'},
+    crumbBox:{left:'3.9%',top:'14.3%',width:'3.7%',height:'6%'},
   },
   'investments/stocks':{
-    image:'/inv-stocks-hero.webp',imageAspect:'1884 / 835',
+    image:'/inv-stocks-hero.webp',imageAspect:'3 / 1',
     mobileImage:'/inv-stocks-hero-m.webp',mobileAspect:'1024 / 710',
-    crumbBox:{left:'3.8%',top:'23.6%',width:'3.6%',height:'5%'},
+    crumbBox:{left:'3.8%',top:'14.3%',width:'3.6%',height:'6%'},
   },
   'investments/fixed-deposits':{
-    image:'/inv-fixed-deposits-hero.webp',imageAspect:'1884 / 835',
+    image:'/inv-fixed-deposits-hero.webp',imageAspect:'3 / 1',
     mobileImage:'/inv-fixed-deposits-hero-m.webp',mobileAspect:'1074 / 670',
-    crumbBox:{left:'3.9%',top:'23.6%',width:'3.5%',height:'5%'},
+    crumbBox:{left:'3.9%',top:'14.3%',width:'3.5%',height:'6%'},
   },
   'investments/portfolio':{
-    image:'/inv-portfolio-hero.webp',imageAspect:'1884 / 835',
+    image:'/inv-portfolio-hero.webp',imageAspect:'3 / 1',
     mobileImage:'/inv-portfolio-hero-m.webp',mobileAspect:'869 / 710',
-    crumbBox:{left:'3.7%',top:'23%',width:'3.8%',height:'5%'},
+    crumbBox:{left:'3.7%',top:'13.2%',width:'3.8%',height:'6%'},
   },
 };
 
